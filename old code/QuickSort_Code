@@ -1,0 +1,115 @@
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+// Function to perform binary search to find the correct partition index
+int binary_search(int arr[], int size, int key) {
+    int left = 0, right = size - 1;
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+        if (arr[mid] == key)
+            return mid;
+        else if (arr[mid] < key)
+            left = mid + 1;
+        else
+            right = mid - 1;
+    }
+    return left;  // Returns the correct insertion position
+}
+
+// Merge two sorted subarrays into output array S
+void merge_arrays(int A[], int m, int B[], int n, int S[]) {
+    int i = 0, j = 0, k = 0;
+    while (i < m && j < n) {
+        if (A[i] < B[j])
+            S[k++] = A[i++];
+        else
+            S[k++] = B[j++];
+    }
+    while (i < m) S[k++] = A[i++];
+    while (j < n) S[k++] = B[j++];
+}
+
+// Main function to merge two sorted arrays A and B
+void parallel_merge(int A[], int m, int B[], int n, int S[]) {
+
+// C++ Program to demonstrate how to implement the quick
+// sort algorithm
+#include <bits/stdc++.h>
+using namespace std;
+
+int partition(vector<int> &vec, int low, int high) {
+
+    // Selecting last element as the pivot
+    int pivot = vec[high];
+
+    // Index of elemment just before the last element
+    // It is used for swapping
+    int i = (low - 1);
+
+    for (int j = low; j <= high - 1; j++) {
+
+        // If current element is smaller than or
+        // equal to pivot
+        if (vec[j] <= pivot) {
+            i++;
+            swap(vec[i], vec[j]);
+        }
+    }
+
+    // Put pivot to its position
+    swap(vec[i + 1], vec[high]);
+
+    // Return the point of partition
+    return (i + 1);
+}
+
+void quickSort(vector<int> &vec, int low, int high) {
+
+    // Base case: This part will be executed till the starting
+    // index low is lesser than the ending index high
+    if (low < high) {
+
+        // pi is Partitioning Index, arr[p] is now at
+        // right place
+        int pi = partition(vec, low, high);
+
+        // Separately sort elements before and after the
+        // Partition Index pi
+        quickSort(vec, low, pi - 1);
+        quickSort(vec, pi + 1, high);
+    }
+}
+
+// Merge two sorted subarrays into output array S
+void merge_arrays(int A[], int m, int B[], int n, int S[]) {
+    int i = 0, j = 0, k = 0;
+    while (i < m && j < n) {
+        if (A[i] < B[j])
+            S[k++] = A[i++];
+        else
+            S[k++] = B[j++];
+    }
+    while (i < m) S[k++] = A[i++];
+    while (j < n) S[k++] = B[j++];
+}
+
+int main() {
+    int m = 2000000000, n = 2000000000; // Size of input arrays
+    int *A = (int *)malloc(m * sizeof(int));
+    int *B = (int *)malloc(n * sizeof(int));    
+    int *S = (int *)malloc((m + n) * sizeof(int));
+    // Calling quicksort for the vector vec
+    quickSort(A, 0, m - 1);
+    quickSort(B, 0, n - 1);
+    // Measure runtime
+    clock_t start = clock();
+    merge_arrays(A, m, B, n, S);
+    clock_t end = clock();
+
+    // Print runtime
+    printf("Merge completed in %f seconds.\n", ((double)(end - start)) / CLOCKS_PER_SEC);
+
+    return 0;
+}
